@@ -71,7 +71,8 @@ NONEMPTY_LINT_REPORT := $(BUILD_DIR)/$(LINT_EXT)
 PY$(PROJECT)_SRC := python/$(PROJECT)/_$(PROJECT).cpp
 PY$(PROJECT)_SO := python/$(PROJECT)/_$(PROJECT).so
 # MAT$(PROJECT)_SRC is the matlab wrapper for $(PROJECT)
-MAT$(PROJECT)_SRC := matlab/$(PROJECT)/mat$(PROJECT).cpp
+MAT$(PROJECT)_SRC := matlab/$(PROJECT)/mat$(PROJECT).cpp \
+		     matlab/$(PROJECT)_visual/mat$(PROJECT).cpp
 ifneq ($(MATLAB_DIR),)
 	MAT_SO_EXT := $(shell $(MATLAB_DIR)/bin/mexext)
 endif
