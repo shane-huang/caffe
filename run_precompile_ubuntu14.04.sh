@@ -1,3 +1,5 @@
+#install nvidia cuda toolkit
+sudo apt-get install nvidia-cuda-toolkit 
 
 #install atlas
 sudo apt-get install libatlas-base-dev
@@ -17,7 +19,9 @@ sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev 
 sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev protobuf-compiler
 
 # settings 
-echo "You may with to add below line into your ~/.bashrc:"
+echo "*****************************************************"
+echo "You should use CUDA_DIR=/usr in Makefile.config"
+echo "You may wish to add below line into your ~/.bashrc:"
 echo "export PYTHONPATH=/path/to/caffe/python:\$PYTHONPATH"
 
 #install matlab
