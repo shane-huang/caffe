@@ -1,98 +1,53 @@
 # Inception Network (GoogLeNet Batch Normalization Network)
 name: "InceptionNetwork"
-# - # - ### Training Set
-# - # - layer {
-# - # -   top: "data"
-# - # -   top: "label"
-# - # -   name: "data"
-# - # -   type: "Data"
-# - # -   data_param {
-# - # -     source: "/export/users/akalinin/caffe/mycc/ilsvrc12_train_lmdb"
-# - # -     batch_size: 32
-# - # -     backend: LMDB
-# - # - #    shuffle: true
-# - # -   }
-# - # -   include {
-# - # -     phase: TRAIN
-# - # -   }
-# - # -   transform_param {
-# - # -     mirror: true
-# - # -     crop_size: 224
-# - # - #    mean_file: "/export/users/akalinin/caffe/mycc/imagenet_mean.binaryproto"
-# - # -     mean_value: 104
-# - # -     mean_value: 117
-# - # -     mean_value: 123
-# - # -   }
-# - # - }
-# - # - ### Validation Set
-# - # - layer {
-# - # -   top: "data"
-# - # -   top: "label"
-# - # -   name: "data"
-# - # -   type: "Data"
-# - # -   data_param {
-# - # -     source: "/media/data0/image/ilsvrc15/ilsvrc12_val_lmdb"
-# - # -     batch_size: 32
-# - # -     backend: LMDB
-# - # -   }
-# - # -   include {
-# - # -     phase: TEST
-# - # -   }
-# - # -   transform_param {
-# - # -     mirror: false
-# - # -     crop_size: 224
-# - # - #    mean_file: "/media/data0/image/ilsvrc15/imagenet_mean.binaryproto"
-# - # -     mean_value: 104
-# - # -     mean_value: 117
-# - # -     mean_value: 123
-# - # -   }
-# - # - }
-#--------------------
+### Training Set
 layer {
-  name: "data"
-  type: "Data"
   top: "data"
   top: "label"
+  name: "data"
+  type: "Data"
+  data_param {
+    source: "examples/imagenet/ilsvrc12_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+#    shuffle: true
+  }
   include {
     phase: TRAIN
   }
   transform_param {
     mirror: true
     crop_size: 224
+#    mean_file: "data/ilsvrc12/imagenet_mean.binaryproto"
     mean_value: 104
     mean_value: 117
     mean_value: 123
   }
-  data_param {
-    source: "/data2/examples/imagenet/ilsvrc12_train_lmdb"
-    batch_size: 32
-    backend: LMDB
-  }
 }
+### Validation Set
 layer {
-  name: "data"
-  type: "Data"
   top: "data"
   top: "label"
+  name: "data"
+  type: "Data"
+  data_param {
+    source: "examples/imagenet/ilsvrc12_val_lmdb"
+    batch_size: 16
+    backend: LMDB
+  }
   include {
     phase: TEST
   }
   transform_param {
     mirror: false
     crop_size: 224
+#    mean_file: "data/ilsvrc12/imagenet_mean.binaryproto"
     mean_value: 104
     mean_value: 117
     mean_value: 123
   }
-  data_param {
-    source: "/data2/examples/imagenet/ilsvrc12_val_lmdb"
-    batch_size: 4
-    backend: LMDB
-  }
 }
 
-
-#--------------------
 layer {
  bottom: "data"
   top: "conv1/7x7_s2"
@@ -103,6 +58,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 64
     pad: 3
     kernel_size: 7
@@ -119,6 +75,7 @@ layer {
   top: "conv1/7x7_s2/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -136,6 +93,7 @@ layer {
   name: "conv1/7x7_s2/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -144,6 +102,7 @@ layer {
   name: "pool1/3x3_s2"
   type: "Pooling"
   pooling_param {
+    
     pool: MAX
     kernel_size: 3
     stride: 2
@@ -159,6 +118,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 64
     pad: 0
     kernel_size: 1
@@ -175,6 +135,7 @@ layer {
   top: "conv2/3x3_reduce/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -192,6 +153,7 @@ layer {
   name: "conv2/3x3_reduce/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -204,6 +166,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 192
     pad: 1
     kernel_size: 3
@@ -220,6 +183,7 @@ layer {
   top: "conv2/3x3/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -237,6 +201,7 @@ layer {
   name: "conv2/3x3/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -245,6 +210,7 @@ layer {
   name: "pool2/3x3_s2"
   type: "Pooling"
   pooling_param {
+    
     pool: MAX
     kernel_size: 3
     stride: 2
@@ -260,6 +226,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 64
     pad: 0
     kernel_size: 1
@@ -276,6 +243,7 @@ layer {
   top: "inception_3a/1x1/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -293,6 +261,7 @@ layer {
   name: "inception_3a/1x1/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -305,6 +274,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 64
     pad: 0
     kernel_size: 1
@@ -321,6 +291,7 @@ layer {
   top: "inception_3a/3x3_reduce/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -338,6 +309,7 @@ layer {
   name: "inception_3a/3x3_reduce/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -350,6 +322,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 64
     pad: 1
     kernel_size: 3
@@ -366,6 +339,7 @@ layer {
   top: "inception_3a/3x3/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -383,6 +357,7 @@ layer {
   name: "inception_3a/3x3/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -395,6 +370,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 64
     pad: 0
     kernel_size: 1
@@ -411,6 +387,7 @@ layer {
   top: "inception_3a/double3x3_reduce/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -428,6 +405,7 @@ layer {
   name: "inception_3a/double3x3_reduce/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -440,6 +418,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 96
     pad: 1
     kernel_size: 3
@@ -456,6 +435,7 @@ layer {
   top: "inception_3a/double3x3a/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -473,6 +453,7 @@ layer {
   name: "inception_3a/double3x3a/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -485,6 +466,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 96
     pad: 1
     kernel_size: 3
@@ -501,6 +483,7 @@ layer {
   top: "inception_3a/double3x3b/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -518,6 +501,7 @@ layer {
   name: "inception_3a/double3x3b/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -526,6 +510,7 @@ layer {
   name: "inception_3a/pool"
   type: "Pooling"
   pooling_param {
+    
     pool: AVE
     kernel_size: 3
     stride: 1
@@ -542,6 +527,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 32
     pad: 0
     kernel_size: 1
@@ -558,6 +544,7 @@ layer {
   top: "inception_3a/pool_proj/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -575,6 +562,7 @@ layer {
   name: "inception_3a/pool_proj/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -586,6 +574,7 @@ layer {
   name: "inception_3a/output"
   type: "Concat"
   concat_param {
+    
   }
 }
 layer {
@@ -598,6 +587,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 64
     pad: 0
     kernel_size: 1
@@ -614,6 +604,7 @@ layer {
   top: "inception_3b/1x1/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -631,6 +622,7 @@ layer {
   name: "inception_3b/1x1/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -643,6 +635,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 64
     pad: 0
     kernel_size: 1
@@ -659,6 +652,7 @@ layer {
   top: "inception_3b/3x3_reduce/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -676,6 +670,7 @@ layer {
   name: "inception_3b/3x3_reduce/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
@@ -688,6 +683,7 @@ layer {
     decay_mult: 1
   }
   convolution_param {
+    
     num_output: 96
     pad: 1
     kernel_size: 3
@@ -704,6 +700,7 @@ layer {
   top: "inception_3b/3x3/bn"
   type: "BatchNorm"
   batch_norm_param {
+    
   }
 }
 layer {
@@ -721,6 +718,7 @@ layer {
   name: "inception_3b/3x3/bn/sc/relu"
   type: "ReLU"
   relu_param {
+    
   }
 }
 layer {
