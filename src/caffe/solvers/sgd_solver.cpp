@@ -56,6 +56,42 @@ Dtype SGDSolver<Dtype>::GetLearningRate() {
     rate = this->param_.base_lr() * (Dtype(1.) /
         (Dtype(1.) + exp(-this->param_.gamma() * (Dtype(this->iter_) -
           Dtype(this->param_.stepsize())))));
+  } else if (lr_policy == "triangular") {
+    int itr = this->iter_ - this->param_.start_lr_policy();
+    if (itr > 0) {
+        int cycle = 1 + itr / (2*this->param_.stepsize());
+        float x = (float) (itr - (2*cycle - 1) * this->param_.stepsize());
+        x = x / this->param_.stepsize();
+        //the actual maximum lr will drop as the rate of 1/2,1/3,etc...
+        rate = this->param_.base_lr() + (this->param_.max_lr() - this->param_.base_lr()) * std::min(double(1),std::max(double(0),(1.0-fabs(x)))/cycle);
+    } else {
+        rate = this->param_.base_lr();
+    }
+  } else if (lr_policy == "triangular2") {
+    int itr = this->iter_ - this->param_.start_lr_policy();
+    if (itr > 0){
+        int cycle = itr / (2*this->param_.stepsize());
+        float x  = (float )(itr - (2*cycle+1)*this->param_.stepsize());
+        x = x / this->param_.stepsize();
+        rate = this->param_.base_lr() + (this->param_.max_lr()- this->param_.base_lr()) * std::min(double(1),std::max(double(0),(1.0-fabs(x))/pow(2.0,double(cycle))));
+
+    } else {
+        rate = this->param_.base_lr();
+    }
+  } else if (lr_policy == "exp_range") {
+    int itr = this->iter_ - this->param_.start_lr_policy();
+    if (itr > 0){
+        int cycle = itr / (2*this->param_.stepsize());
+        float x  = (float )(itr - (2*cycle+1)*this->param_.stepsize());
+        x = x / this->param_.stepsize();
+        //base_lr declines by an exponential factor
+        double base_lr = this->param_.base_lr() * pow(this->param_.gamma(),double(cycle));
+        double max_lr = this->param_.max_lr() * pow(this->param_.gamma(),double(cycle)); 
+        rate = base_lr + (max_lr - base_lr) *
+            std::min(double(1),std::max(double(0),(1.0-fabs(x))));
+    } else {
+        rate = this->param_.base_lr();
+    }
   } else {
     LOG(FATAL) << "Unknown learning rate policy: " << lr_policy;
   }

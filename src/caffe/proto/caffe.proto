@@ -182,6 +182,13 @@ message SolverParameter {
   // the stepsize for learning rate policy "multistep"
   repeated int32 stepvalue = 34;
 
+  // extra parameters for cyclcal learning rates,e.g. triangular, triangular2,
+  // exp_range, welch, hann, linear, decay, exp_step, exp_cont
+  // maximum learning rate
+  optional float max_lr = 41;  
+  //the iteration number to start the specified policy
+  optional int32 start_lr_policy = 42;
+
   // Set clip_gradients to >= 0 to clip parameter gradients to that L2 norm,
   // whenever their actual L2 norm is larger.
   optional float clip_gradients = 35 [default = -1];
